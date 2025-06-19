@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from .manager import UserManager
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from results.models import Classroom
+
 # Create your models here.
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -53,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     password = models.CharField(max_length=20, help_text="input your password")
     blood_group = models.CharField(max_length=100, choices=BLOOD_GROUP, default='Choose a blood group', blank=True, null=True)
     role = models.CharField(max_length=255, choices=ROLE_TYPE, default='Select a role')
-    is_teacher = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=True)
@@ -98,11 +98,10 @@ class Student(models.Model):
     ]
 
     name = models.CharField(max_length=250)
-    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
     image = models.FileField(upload_to="image", default="default/default.jpg", null=True, blank=True)
     dob = models.CharField(max_length=100, null=True, blank=True)
     gender = models.CharField(max_length=50, choices=GENDER_TYPE, default='Gender')
-    gender = models.CharField(max_length=50, choices=RELIGION_TYPE, default='Religion')
+    religion = models.CharField(max_length=50, choices=RELIGION_TYPE, default='Religion')
     mobile_number = models.CharField(max_length=20, null=True, blank=True)
     phone_number = models.CharField(max_length=20, null=True, blank=True)
     admission_number = models.CharField(max_length=100)
@@ -113,6 +112,7 @@ class Student(models.Model):
     mother_number = models.CharField(max_length=20, null=True, blank=True)
     password = models.CharField(max_length=20, help_text="input your password")
     blood_group = models.CharField(max_length=100, choices=BLOOD_GROUP)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

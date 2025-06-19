@@ -6,7 +6,7 @@ __pycache__/
 venv
 *migrations
 *.log
-job_star/media/
-job_star/static/
+media/
+static/
 testing.py
 testing.py

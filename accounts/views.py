@@ -3,30 +3,37 @@ from django.http import Http404
 
 from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.mixins import UpdateModelMixin
 from rest_framework.permissions import IsAuthenticated
 
-from .models import User
+from .models import User, Student
 
 from .serializers import (
     UserSerializer,
     LoginUserSerializer,
+    GetUserSerializer,
+    ToggleUserSerializer,
+    StudentSerializer,
+    LoginStudentSerializer
 )
 
 
-class RegisterORListUsersView(GenericAPIView):
-    serializer_class= UserSerializer
+class GetUserView(GenericAPIView):
+    serializer_class= GetUserSerializer
 
     def get(self, request, format=None):
-        users = User.objects.filter(is_deleted=True)
+        users = User.objects.filter(is_deleted=False)
         serializer = self.serializer_class(users, many=True)
         return Response({
             'data':serializer.data
             }, 
             status=status.HTTP_200_OK)
 
+class RegisterUsersView(GenericAPIView):
+    serializer_class= UserSerializer
 
     def post(self, request, format=None):
         user_data=request.data
@@ -42,52 +49,27 @@ class RegisterORListUsersView(GenericAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class UserDetailView(GenericAPIView, UpdateModelMixin):
+class UserDetailView(generics.RetrieveUpdateAPIView):
     serializer_class = UserSerializer
+    queryset = User.objects.all()
 
-    def get_object(self, pk):
-        try:
-            return User.objects.get(pk=pk)
-        except User.DoesNotExist:
-            raise Http404
 
-    def get(self, request, pk, format=None):
-        user = self.get_object(pk)
-        serializer = self.serializer_class(user)
-        return Response({
-            'data':serializer.data
-            }, 
-            status=status.HTTP_200_OK)
+class ToggleUserForDeleteView(APIView):
 
-    def patch(self, request, pk, format=None):
-        user_data = request.data
-        user = self.get_object(pk)
-        serializer = self.serializer_class(user, data=user_data)
-
-        if serializer.is_valid(raise_exception=True) and request.user.id==user.id:
-            serializer.save()
-            return Response({
-                'data':serializer.data,
-                "message":"Updated successfully"
-            }, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, pk, format=None):
-        user = self.get_object(pk)
-        if not user.is_superuser:
-            user.is_deleted = not(user.is_deleted)
+    def delete(self, request, pk):
+        user_id = request.data.get('user_id')
+        user = User.objects.get(id=user_id)
+        if user.is_deleted == True:
+            user.is_deleted = not (user.is_deleted)
             user.save()
             return Response({
-                "message":"has been deleted"}, 
-                status=status.HTTP_204_NO_CONTENT
-            )
+                'message':f'user with {user.id} ID deleted',
+                
+            }, status=status.HTTP_201_CREATED)
         return Response({
-            "message": "Permission denied "
-        }, status=status.HTTP_401_UNAUTHORIZED)
+            'message':f'user with {user.id} ID undeleted'
+        }, status=status.HTTP_201_CREATED)
 
-
-    
-    
 
 class LoginUserAPIView(GenericAPIView):
     serializer_class = LoginUserSerializer
@@ -99,3 +81,27 @@ class LoginUserAPIView(GenericAPIView):
 
 
 
+class StudentListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = StudentSerializer
+    queryset = Student.objects.all()
+
+
+class StudentDetailAPIView(generics.RetrieveUpdateAPIView):
+    serializer_class = StudentSerializer
+    queryset = Student.objects.all()
+
+
+class LoginStudentAPIView(GenericAPIView):
+    serializer_class = LoginStudentSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data, context={'request':request})
+        if serializer.is_valid(raise_exception=True):
+            student=serializer.data
+            print(student)
+            return Response({
+                'data':student,
+                'message':f'Login successfully',
+                
+            }, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
