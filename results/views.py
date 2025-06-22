@@ -11,6 +11,11 @@ from .serializers import ClassroomSerializer
 
 
 
-class CreateClassroomAPIView(generics.GenericAPIView):
+class CreateListClassroomAPIView(generics.ListCreateAPIView):
+    serializer_class = ClassroomSerializer
+    queryset = Classroom.objects.all()
+
+
+class ClassroomDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ClassroomSerializer
     queryset = Classroom.objects.all()

@@ -17,7 +17,8 @@ from .serializers import (
     GetUserSerializer,
     ToggleUserSerializer,
     StudentSerializer,
-    LoginStudentSerializer
+    LoginStudentSerializer,
+    StudentResponseSerializer
 )
 
 
@@ -96,12 +97,14 @@ class LoginStudentAPIView(GenericAPIView):
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data, context={'request':request})
-        if serializer.is_valid(raise_exception=True):
-            student=serializer.data
-            print(student)
-            return Response({
-                'data':student,
+        serializer.is_valid(raise_exception=True)
+
+        student=serializer.validated_data['student']
+
+        response_serializer = StudentResponseSerializer(student)
+
+        return Response({
+                'data':response_serializer.data,
                 'message':f'Login successfully',
                 
-            }, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            }, status=status.HTTP_200_OK)

@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from .views import (
     RegisterUsersView, 
@@ -20,4 +20,7 @@ urlpatterns=[
     path('students/', StudentListCreateAPIView.as_view()),
     path('student/<int:pk>/', StudentDetailAPIView.as_view()),
     path('student/login', LoginStudentAPIView.as_view()),
+
+
+    path('results/', include("results.urls"))
 ]

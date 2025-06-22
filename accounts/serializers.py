@@ -129,13 +129,20 @@ class StudentSerializer(serializers.ModelSerializer):
         return instance
 
 
+class StudentResponseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model=Student
+        fields='__all__'
+
+
 class LoginStudentSerializer(serializers.ModelSerializer):
     password=serializers.CharField(max_length=68, write_only=True)
     admission_number=serializers.CharField(max_length=255, write_only=True)
     
     class Meta:
         model=Student
-        fields=['admission_number','password']
+        fields=['id','admission_number','password']
 
     def validate(self, attrs):
         admission_number=attrs.get('admission_number')
