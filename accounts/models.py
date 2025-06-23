@@ -4,7 +4,6 @@ from django.utils.translation import gettext_lazy as _
 from .manager import UserManager
 from rest_framework_simplejwt.tokens import RefreshToken
 
-
 # Create your models here.
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -75,7 +74,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     
 class Student(models.Model):
-
+    from results.models import Classroom
     GENDER_TYPE = [
         ('male', "MALE"),
         ('female', "FEMALE"),
@@ -98,6 +97,7 @@ class Student(models.Model):
     ]
 
     name = models.CharField(max_length=250)
+    class_room = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name='students')
     image = models.FileField(upload_to="image", default="default/default.jpg", null=True, blank=True)
     dob = models.CharField(max_length=100, null=True, blank=True)
     gender = models.CharField(max_length=50, choices=GENDER_TYPE, default='Gender')
