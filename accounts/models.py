@@ -97,7 +97,7 @@ class Student(models.Model):
     ]
 
     name = models.CharField(max_length=250)
-    class_room = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name='students')
+    class_room = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name='students', default=1)
     image = models.FileField(upload_to="image", default="default/default.jpg", null=True, blank=True)
     dob = models.CharField(max_length=100, null=True, blank=True)
     gender = models.CharField(max_length=50, choices=GENDER_TYPE, default='Gender')

@@ -27,7 +27,7 @@ class AdminComment(models.Model):
         return f"{self.comment} by {self.comment_by}"
 
 class Subject(models.Model):
-    class_room = models.ManyToManyField(Classroom, related_name='subjects')
+    class_room = models.ManyToManyField(Classroom, related_name='subjects', default=1)
     name = models.CharField(max_length=250, unique=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
@@ -39,8 +39,8 @@ class Subject(models.Model):
 class Result(models.Model):
     Term = [
         ('first', 'FIRST TERM'),
-        ('second', 'FIRST TERM'),
-        ('third', 'FIRST TERM')
+        ('second', 'SECOND TERM'),
+        ('third', 'THIRD TERM')
     ]
 
     GRADE_TYPE = [
@@ -61,6 +61,8 @@ class Result(models.Model):
     exam_score = models.IntegerField(null=True, blank=True, default=0)
     total = models.IntegerField(null=True, blank=True, default=0)
     grade = models.CharField(max_length=1, choices=GRADE_TYPE, blank=True)
+    admin_comment = models.ForeignKey(AdminComment, on_delete=models.CASCADE, related_name='results')
+    teacher_comment =models.CharField(max_length=250, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

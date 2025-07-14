@@ -21,6 +21,6 @@ urlpatterns=[
     path('student/<int:pk>/', StudentDetailAPIView.as_view()),
     path('student/login', LoginStudentAPIView.as_view()),
 
-
-    path('results/', include("results.urls"))
+    # result urls.py is included here.
+    path('', include("results.urls"))
 ]

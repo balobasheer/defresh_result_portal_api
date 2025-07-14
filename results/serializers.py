@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 
-from .models import Classroom, Subject, User
+from .models import Classroom, AcademicSession
 
 
 class ClassroomSerializer(serializers.ModelSerializer):
@@ -24,3 +24,11 @@ class ClassroomSerializer(serializers.ModelSerializer):
             name=class_name
         )
         return class_room
+
+
+class AcademicSessionSerializer(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = AcademicSession
+        fields = '__all__'
