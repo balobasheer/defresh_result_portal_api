@@ -2,7 +2,7 @@
 
 
 [phases.setup]
-nixPkgs = ['Python 3.11.4', 'postgresql', 'git']
+nixPkgs = ['python 3.11.4', 'postgresql', 'git']
 
 [phases.install]
 cmds = ["pip install -r requirements.txt"]
