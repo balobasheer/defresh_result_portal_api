@@ -9,4 +9,5 @@ venv
 media/
 static/
 testing.py
-testing.py
+testing.py".env" 
+result/
