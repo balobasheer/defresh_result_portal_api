@@ -1,0 +1,13 @@
+
+
+[phases.setup]
+nixPkgs = ['Python 3.11.4', 'postgresql', 'git']
+
+[phases.install]
+cmds = ["pip install -r requirements.txt"]
+
+[phases.build]
+cmds = ["python manage.py collectstatic --noinput"]
+
+[phases.start]
+cmd = "gunicorn backend.wsgi:application --bind 0.0.0.0:8080"
