@@ -81,7 +81,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://localhost:3000",
     "http://defreshresultportalapi-production.up.railway.app/api/v1/",
-    "defreshresultportalapi-production.up.railway.app"
+    "defreshresultportalapi-production.up.railway.app",
+    'http://defreshresultportalapi-production.up.railway.app/api/v1/users/'
 ]
 
 CORS_ALLOW_CREDENTIALS  = True
