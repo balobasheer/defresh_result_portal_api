@@ -33,7 +33,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG')
 
 ALLOWED_HOSTS = [
-    'pixellium-result-portal.up.railway.app'
+    'pixellium-result-portal.up.railway.app',
     'localhost',
     '127.0.0.1'
     ]
