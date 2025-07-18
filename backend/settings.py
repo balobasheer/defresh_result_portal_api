@@ -34,6 +34,7 @@ DEBUG = os.getenv('DEBUG')
 
 ALLOWED_HOSTS = [
     'http://defreshresultportalapi-production.up.railway.app/',
+    'defreshresultportalapi-production.up.railway.app',
     'localhost',
     '127.0.0.1'
     ]
@@ -80,7 +81,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://localhost:3000",
     "http://defreshresultportalapi-production.up.railway.app/api/v1/",
-    "https://defreshresultportalapi-production.up.railway.app/"
+    "defreshresultportalapi-production.up.railway.app"
 ]
 
 CORS_ALLOW_CREDENTIALS  = True
